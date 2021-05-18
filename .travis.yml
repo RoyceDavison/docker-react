@@ -1,0 +1,25 @@
+sudo: required
+language: generic
+services:
+    - docker
+
+before_install:
+    - docker build -t royce/docker-react -f Dockerfile.dev .
+
+script:
+    - docker run -e CI=true royce/docker-react npm run test
+
+deploy:
+    provider: elasticbeanstalk
+    region: "us-west-2"
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    app: "royce-study-elastic-benstalk"
+    env: "Roycestudyelasticbenstalk-env"
+    bucket_name: "elasticbenstalk-us-west-2-667441152617"
+    bucket_path: "royce-study-elastic-benstalk"
+    on:
+        branch: master
+
+
+
